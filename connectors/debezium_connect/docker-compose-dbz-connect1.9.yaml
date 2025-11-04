@@ -1,0 +1,29 @@
+version: '3.4'
+services:
+  dbz-eventhub:
+    image: debezium/connect:1.9
+    container_name: dbz-connect
+    ports:
+      - 8083:8083
+    environment:
+      # GROUP_ID: cdc-group
+      LOG_LEVEL: INFO
+      BOOTSTRAP_SERVERS: nxuevent.servicebus.windows.net:9093
+      CONFIG_STORAGE_TOPIC: debezium_configs
+      OFFSET_STORAGE_TOPIC: debezium_offsets
+      STATUS_STORAGE_TOPIC: debezium_status
+      CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      STATUS_STORAGE_REPLICATION_FACTOR: 1 
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: false 
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: false 
+      CONNECT_REQUEST_TIMEOUT_MS: 60000 
+      CONNECT_SECURITY_PROTOCOL: SASL_SSL 
+      CONNECT_SASL_MECHANISM: PLAIN 
+      CONNECT_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$$ConnectionString\" password=\"${eh_constr}\";" 
+      CONNECT_PRODUCER_SECURITY_PROTOCOL: SASL_SSL 
+      CONNECT_PRODUCER_SASL_MECHANISM: PLAIN 
+      CONNECT_PRODUCER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$$ConnectionString\" password=\"${eh_constr}\";" 
+      CONNECT_CONSUMER_SECURITY_PROTOCOL: SASL_SSL 
+      CONNECT_CONSUMER_SASL_MECHANISM: PLAIN 
+      CONNECT_CONSUMER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$$ConnectionString\" password=\"${eh_constr}\";" 
